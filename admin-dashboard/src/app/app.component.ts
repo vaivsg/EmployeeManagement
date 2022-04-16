@@ -1,5 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { Chart, registerables } from 'chart.js';
+Chart.register(...registerables);
 import { SystemCpu } from './interface/system-cpu';
 import { SystemHealth } from './interface/system-health';
 import { DashboardService } from './service/dashboard.service';
@@ -36,6 +38,7 @@ export class AppComponent implements OnInit {
       (response: any) => {
         console.log(response.traces);
         this.processTraces(response.traces);
+        this.initializeBarChart();
       },
       (error: HttpErrorResponse) => {
         alert(error.message);
@@ -70,16 +73,16 @@ export class AppComponent implements OnInit {
     );
   }
 
-  public onRefreshData():void{
-  this.http200Traces= [];
-  this.http404Traces= [];
-  this.http400Traces= [];
-  this.http500Traces= [];
-  this.httpDefaultTraces= [];
-     this.getTraces();
-     this.getCpuUsage();
-     this.getSystemHealth();
-     this.getProcessUptime(false);
+  public onRefreshData(): void {
+    this.http200Traces = [];
+    this.http404Traces = [];
+    this.http400Traces = [];
+    this.http500Traces = [];
+    this.httpDefaultTraces = [];
+    this.getTraces();
+    this.getCpuUsage();
+    this.getSystemHealth();
+    this.getProcessUptime(false);
   }
 
   private getProcessUptime(isUpdateTime: boolean): void {
@@ -117,6 +120,49 @@ export class AppComponent implements OnInit {
         default:
           this.httpDefaultTraces.push(trace);
       }
+    });
+  }
+
+  private initializeBarChart(): Chart<'bar', number[], string> {
+    const barChartElement = document.getElementById(
+      'barchart'
+    ) as HTMLCanvasElement;
+    return new Chart(barChartElement, {
+      type: 'bar',
+      data: {
+        labels: ['200', '404', '400', '500'],
+        datasets: [
+          {
+            label:'BarChart',
+            data: [
+              this.http200Traces.length,
+              this.http404Traces.length,
+              this.http400Traces.length,
+              this.http500Traces.length,
+            ],
+            backgroundColor: [
+              'rgba(40, 167, 69, 0.2)',
+              'rgba(0, 123, 255, 0.2)',
+              'rgba(253, 126, 20, 0.2)',
+              'rgba(220, 53, 69, 0.2)',
+            ],
+            borderColor: [
+              'rgba(40, 167, 69, 1)',
+              'rgba(0, 123, 255, 1)',
+              'rgba(253, 126, 20, 1)',
+              'rgba(220, 53, 69, 1)',
+            ],
+            borderWidth: 3,
+          },
+        ],
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+          },
+        },
+      },
     });
   }
 
