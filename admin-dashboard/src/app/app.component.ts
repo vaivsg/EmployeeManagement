@@ -39,6 +39,7 @@ export class AppComponent implements OnInit {
         console.log(response.traces);
         this.processTraces(response.traces);
         this.initializeBarChart();
+        this.initializePieChart();
       },
       (error: HttpErrorResponse) => {
         alert(error.message);
@@ -133,7 +134,7 @@ export class AppComponent implements OnInit {
         labels: ['200', '404', '400', '500'],
         datasets: [
           {
-            label:'BarChart',
+            label: 'BarChart',
             data: [
               this.http200Traces.length,
               this.http404Traces.length,
@@ -160,6 +161,53 @@ export class AppComponent implements OnInit {
         scales: {
           y: {
             beginAtZero: true,
+          },
+        },
+      },
+    });
+  }
+
+  private initializePieChart(): Chart<'pie', number[], string> {
+    const pieChartElement = document.getElementById(
+      'piechart'
+    ) as HTMLCanvasElement;
+    return new Chart(pieChartElement, {
+      type: 'pie',
+      data: {
+        labels: ['200', '404', '400', '500'],
+        datasets: [
+          {
+            label: 'BarChart',
+            data: [
+              this.http200Traces.length,
+              this.http404Traces.length,
+              this.http400Traces.length,
+              this.http500Traces.length,
+            ],
+            backgroundColor: [
+              'rgba(40, 167, 69, 0.2)',
+              'rgba(0, 123, 255, 0.2)',
+              'rgba(253, 126, 20, 0.2)',
+              'rgba(220, 53, 69, 0.2)',
+            ],
+            borderColor: [
+              'rgba(40, 167, 69, 1)',
+              'rgba(0, 123, 255, 1)',
+              'rgba(253, 126, 20, 1)',
+              'rgba(220, 53, 69, 1)',
+            ],
+            borderWidth: 3,
+          },
+        ],
+      },
+      options: {
+        plugins: {
+          title: {
+                display: true,
+                text: 'Last 100 Requests'
+            },
+          legend: {
+            display: true,
           },
         },
       },
