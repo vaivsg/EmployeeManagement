@@ -1,4 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
+import { DYNAMIC_TYPE } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
 import { Chart, registerables } from 'chart.js';
 Chart.register(...registerables);
@@ -136,7 +137,7 @@ export class AppComponent implements OnInit {
         labels: ['200', '404', '400', '500'],
         datasets: [
           {
-            label: 'BarChart',
+            label: `Last 100 Requests as of ${this.formatDate(new Date())}`,
             data: [
               this.http200Traces.length,
               this.http404Traces.length,
@@ -163,6 +164,12 @@ export class AppComponent implements OnInit {
         scales: {
           y: {
             beginAtZero: true,
+          },
+          plugins: {
+            title: {
+              display: true,
+              text: `Last 100 Requests as of ${this.formatDate(new Date())}`,
+            },
           },
         },
       },
@@ -206,7 +213,7 @@ export class AppComponent implements OnInit {
         plugins: {
           title: {
                 display: true,
-                text: 'Last 100 Requests'
+                text: `Last 100 Requests as of ${this.formatDate(new Date())}`
             },
           legend: {
             display: true,
@@ -263,4 +270,12 @@ export class AppComponent implements OnInit {
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
   }
+
+  private formatDate(date:Date):String{
+    const dd = date.getDate() < 10 ? `0${date.getDate()}` : `${date.getDate()}`;
+    const mm = date.getMonth() < 10 ? `0${date.getMonth()}` : `${date.getMonth()}`;
+    const year=date.getFullYear();
+    return `${mm}/${dd}/${year}`;
+  }
+
 }
