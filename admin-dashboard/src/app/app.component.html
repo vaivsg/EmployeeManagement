@@ -22,18 +22,31 @@
   >
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-        <span><i class="fa fa-server"></i> System:{{systemHealth?.status}}</span>&nbsp;&nbsp;
-        <span><i class="fa fa-database"></i> DB: {{ systemHealth?.components?.db?.details?.database }}-{{systemHealth?.components?.db?.status}}</span>&nbsp;&nbsp;
-        <span><i class="fa fa-hdd-o"></i> Disk Space: {{systemHealth?.components?.diskSpace?.details?.free }} </span>&nbsp;&nbsp;
+        <span
+          ><i class="fa fa-server"></i> System:{{ systemHealth?.status }}</span
+        >&nbsp;&nbsp;
+        <span
+          ><i class="fa fa-database"></i> DB:
+          {{ systemHealth?.components?.db?.details?.database }}-{{
+            systemHealth?.components?.db?.status
+          }}</span
+        >&nbsp;&nbsp;
+        <span
+          ><i class="fa fa-hdd-o"></i> Disk Space:
+          {{ systemHealth?.components?.diskSpace?.details?.free }} </span
+        >&nbsp;&nbsp;
         <span
           ><i class="fa fa-microchip"></i> Processors:
           {{systemCpu?.measurements?.[0]?.value}} </span
         >&nbsp;&nbsp;
-        <span><i class="fa fa-clock-o"></i> Up Time:{{processUptime}} </span>&nbsp;&nbsp;
+        <span><i class="fa fa-clock-o"></i> Up Time:{{ processUptime }} </span
+        >&nbsp;&nbsp;
       </li>
     </ul>
     <div class="form-inline my-2 my-lg-0">
-      <button (click)="onRefreshData()" class="btn btn-success my-2 my-sm-0">Refresh Data</button>
+      <button (click)="onRefreshData()" class="btn btn-success my-2 my-sm-0">
+        Refresh Data
+      </button>
     </div>
   </div>
 </nav>

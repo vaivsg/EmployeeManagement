@@ -23,6 +23,8 @@ export class AppComponent implements OnInit {
   public http500Traces: any[] = [];
   public httpDefaultTraces: any[] = [];
   public timestamp: number;
+  public pageSize=10;
+  public page=1;
 
   constructor(private dashboardService: DashboardService) {}
 
