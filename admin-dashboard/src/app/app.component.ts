@@ -221,6 +221,17 @@ export class AppComponent implements OnInit {
     document.getElementById('trace-modal')?.click();
   }
 
+  public exportTableToExcel(): void{
+    const downloadLink=document.createElement('a');
+    const dataType='application/vnd.ms-excel';
+    const table=document.getElementById('httptrace-table');
+    const tableHtml= table?.outerHTML.replace(/ /g,'%20');
+    document.body.appendChild(downloadLink);
+    downloadLink.href='data:'+dataType+' '+tableHtml;
+    downloadLink.download='httptrace.xls';
+    downloadLink.click();
+  }
+
   public updateTime(): void {
     setInterval(() => {
       this.processUptime = this.formatUptime(this.timestamp + 1);
